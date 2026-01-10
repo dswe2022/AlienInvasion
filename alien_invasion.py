@@ -14,6 +14,11 @@ class AlienInvasion:
         self.clock = pygame.time.Clock()
         self.settings = Settings()
 
+        #Fullscreen mode
+        self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+        self.settings.screen_width = self.screen.get_rect().width
+        self.settings.screen_height = self.screen.get_rect().height
+
         #Create the screen
         self.screen = pygame.display.set_mode(
             (self.settings.screen_width, self.settings.screen_height))
@@ -29,7 +34,7 @@ class AlienInvasion:
             self.ship.update()
             self._update_screen()
             #clock update 60 events per second
-            self.clock.tick(10)
+            self.clock.tick(6000)
             #Redraw the screen during each pass through the loop.
             self.screen.fill(self.settings.bg_color)
             #Make the most recently drawn screen visible.
@@ -63,6 +68,25 @@ class AlienInvasion:
                     self.ship.moving_left = False
                     self.ship.rect.x -= 1
 
+
+    def _check_keydown_events(self,event):
+        ''''''
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.meoving_left = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+
+
+
+    def _check_keyup_events(self, event):
+        '''Respond to key releases.'''
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        
 
     def _update_screen(self):
         '''Update images on the screen, and flip to the new screen'''
