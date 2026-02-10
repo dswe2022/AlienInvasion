@@ -2,6 +2,8 @@ import sys
 import pygame
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
+
 
 
 class AlienInvasion:
@@ -26,12 +28,18 @@ class AlienInvasion:
 
         #Create the Ship
         self.ship = Ship(self)
+        
+        self.bullets = pygame.sprite.Group()
+
+        
 
     def run_game(self):
         '''Start the main loop for the game'''  
         while True:
             self._check_events()
             self.ship.update()
+            #Bullet
+            self.bullets.update()
             self._update_screen()
             #clock update 60 events per second
             self.clock.tick(6000)
@@ -77,6 +85,15 @@ class AlienInvasion:
             self.ship.meoving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
+
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group."""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)
 
 
 
@@ -91,6 +108,10 @@ class AlienInvasion:
     def _update_screen(self):
         '''Update images on the screen, and flip to the new screen'''
         self.screen.fill(self.settings.bg_color)
+        #Bullet
+        for bullet in self.bullets.sprites():
+            bullet.draw_bullet()
+            
         self.ship.blitme()
         pygame.display.flip()
 
