@@ -40,6 +40,13 @@ class AlienInvasion:
             self.ship.update()
             #Bullet
             self.bullets.update()
+
+            #Get rid of bullets that have disappeared.
+            for bullet in self.bullets.copy():
+                if bullet.rect.bottom <= 0:
+                    self.bullets.remove(bullet)
+            print(len(self.bullets))
+
             self._update_screen()
             #clock update 60 events per second
             self.clock.tick(6000)
@@ -91,9 +98,10 @@ class AlienInvasion:
             self._fire_bullet()
 
     def _fire_bullet(self):
-        """Create a new bullet and add it to the bullets group."""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        '''Create a new bullet and add it to the bullets group.'''
+        if len(self.bullets) < (self.settings.bullets_allowed):
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
 
 
@@ -104,6 +112,16 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         
+
+    def _update_bullets(self):
+        '''Update the bullet'''
+        #Update bullet positions.
+        self.bullets.update()
+        #Get rid of bullets that have disappeared.
+        for bullet in self.bullets.copy():
+            if bullet.rect.buottom <= 0:
+                self.bullets.remove(bullet)
+
 
     def _update_screen(self):
         '''Update images on the screen, and flip to the new screen'''
